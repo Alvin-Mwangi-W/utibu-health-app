@@ -1,11 +1,18 @@
 import express, { Express, Request, Response } from "express";
+import { PORT } from "./secrets";
+import authRoutes from "./routes/auth.routes";
+import { PrismaClient } from "@prisma/client";
 
 const app: Express = express();
 
-app.get('/', (req: Request, res: Response) => {
-    res.send("Server Working");
+app.use(express.json());
+
+app.use('/api', authRoutes)
+
+export const prismaClient = new PrismaClient({
+    log: ['query']
 });
 
-app.listen(3000, () => {
-    console.log("Server Working");
+app.listen(PORT, () => {
+    console.log(`Server Working on ${PORT}`);
 });
